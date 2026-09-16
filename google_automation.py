@@ -38,15 +38,14 @@ def _build_driver(profile: DeviceProfile) -> webdriver.Chrome:
     if config.HEADLESS:
         options.add_argument("--headless=new")
 
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--disable-extensions")
-    options.add_argument("--disable-infobars")
-    options.add_argument("--disable-notifications")
-    options.add_argument("--window-size=390,844")  # Pixel 10 Pro screen size
-    options.add_argument(f"--user-agent={profile.user_agent}")
+    options = webdriver.ChromeOptions()
+options.add_argument("--headless=new") # التشغيل بدون شاشة (ضروري جداً)
+options.add_argument("--no-sandbox") # ضروري لبيئة Docker
+options.add_argument("--disable-dev-shm-usage") # لتجنب مشاكل الذاكرة
+options.add_argument("--disable-gpu")
+options.add_argument("--window-size=1920,1080")
 
+# الكود الخاص بـ User-Agent الموجود مسبقاً في الملف يبقى كما هو...
     # Mobile emulation – Pixel 10 Pro viewport
     mobile_emulation = {
         "deviceMetrics": {"width": 390, "height": 844, "pixelRatio": 3.0},
